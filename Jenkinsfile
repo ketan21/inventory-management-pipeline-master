@@ -74,7 +74,7 @@ pipeline {
                 withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
                 //   sh "./gradlew executePegaUnitTests -PtargetURL=${PEGA_DEV} -PpegaUsername=${IMS_USER} -PpegaPassword=${IMS_PASSWORD} -PtestResultLocation=${WORKSPACE} -PtestResultFile=${TESTRESULTSFILE}"
                 
-                    junit "TestResult.xml"
+                   // junit "TestResult.xml"
 
 
 
@@ -151,7 +151,7 @@ pipeline {
                 withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
                 //    sh "./gradlew executePegaUnitTests -PtargetURL=${PEGA_QA} -PpegaUsername=${IMS_USER} -PpegaPassword=${IMS_PASSWORD} -PtestResultLocation=${WORKSPACE} -PtestResultFile=${TESTRESULTSFILE}"
 
-                    junit "TestResult.xml"
+                //    junit "TestResult.xml"
 
 
 

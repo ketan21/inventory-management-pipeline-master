@@ -15,8 +15,8 @@ pipeline {
     stage('RunMyTest') {
       steps {
         echo 'Execute tests'
-        echo $param1
-        echo $param2
+        echo ${params.param1}
+        
         
         
         withEnv(['TESTRESULTSFILE="TestResult.xml"']) {

@@ -16,7 +16,7 @@ pipeline {
       steps {
         echo 'Execute tests'
         echo "${params.param1}"
-        echo "${params.callbackurl}"
+        echo "${params.CallBackURL}"
         
         
         

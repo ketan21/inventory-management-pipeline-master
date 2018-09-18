@@ -8,15 +8,11 @@ pipeline {
     options {
       timestamps()
       timeout(time: 15, unit: 'MINUTES')
-     /* withCredentials([
-      *  usernamePassword(credentialsId: 'artifactory', 
-      *      passwordVariable: 'ARTIFACTORY_PASSWORD', 
-      *      usernameVariable: 'ARTIFACTORY_USER'),
-      *  usernamePassword(credentialsId: 'imsadmin', 
-      *      passwordVariable: 'IMS_PASSWORD',
-      *      usernameVariable: 'IMS_USER')
-      *  ])
-      */
+      withCredentials([
+        usernamePassword(credentialsId: 'imsadmin', 
+           passwordVariable: 'IMS_PASSWORD',
+           usernameVariable: 'IMS_USER')
+       ])
     }
 
     stages {

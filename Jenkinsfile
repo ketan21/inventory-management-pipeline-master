@@ -42,7 +42,7 @@ pipeline {
         }
     }
     }
-                   
+  }               
 
   post {
 
@@ -55,4 +55,4 @@ pipeline {
     }   
   }
 }
-}
+

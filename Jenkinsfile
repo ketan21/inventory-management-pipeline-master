@@ -4,14 +4,14 @@ pipeline {
     timestamps()
     timeout(time: 15, unit: 'MINUTES')
     withCredentials([
-      usernamePassword(credentialsId: 'imsadmin', 
+      usernamePassword(credentialsId: 'imsadmin',
         passwordVariable: 'IMS_PASSWORD',
         usernameVariable: 'IMS_USER')
     ])
   }
 
-  stages { 
-    stage('PegaUNITs in Dev') {
+  stages {
+    stage('DoSomething') {
       steps {
         echo 'Execute tests'
         withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
@@ -24,7 +24,7 @@ pipeline {
           }
         }
       }
-    }  
+    }
 
       stage('PegaUNITs in QA') {
             steps {
@@ -42,17 +42,16 @@ pipeline {
         }
     }
     }
-  }               
+  }
 
   post {
 
     failure {
       mail (
           subject: "${JOB_NAME} ${BUILD_NUMBER} merging branch ${branchName} has failed",
-          body: "Your build ${env.BUILD_NUMBER} has failed.  Find details at ${env.RUN_DISPLAY_URL}", 
+          body: "Your build ${env.BUILD_NUMBER} has failed.  Find details at ${env.RUN_DISPLAY_URL}",
           to: notificationSendToID
       )
-    }   
+    }
   }
 }
-

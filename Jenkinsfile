@@ -4,16 +4,19 @@ pipeline {
     timestamps()
     timeout(time: 15, unit: 'MINUTES')
     withCredentials([
-      usernamePassword(credentialsId: 'imsadmin', 
+      usernamePassword(credentialsId: 'imsadmin',
         passwordVariable: 'IMS_PASSWORD',
         usernameVariable: 'IMS_USER')
     ])
   }
 
-  stages { 
-    stage('PegaUNITs in Dev') {
+
+  stages {
+    stage('RunMyTest') {
       steps {
         echo 'Execute tests'
+        echo $JOB_NAME
+        echo $CallBackURL
         withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
           //   sh "./gradlew executePegaUnitTests -PtargetURL=${PEGA_DEV} -PpegaUsername=${IMS_USER} -PpegaPassword=${IMS_PASSWORD} -PtestResultLocation=${WORKSPACE} -PtestResultFile=${TESTRESULTSFILE}"
           // junit "TestResult.xml"
@@ -24,35 +27,14 @@ pipeline {
           }
         }
       }
-    }  
-
-      stage('PegaUNITs in QA') {
-            steps {
-                echo 'Execute tests'
-
-                withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
-                //    sh "./gradlew executePegaUnitTests -PtargetURL=${PEGA_QA} -PpegaUsername=${IMS_USER} -PpegaPassword=${IMS_PASSWORD} -PtestResultLocation=${WORKSPACE} -PtestResultFile=${TESTRESULTSFILE}"
-                //    junit "TestResult.xml"
-                script {
-                       if (currentBuild.result != null) {
-                           error("PegaUNIT tests have failed in QA.")
-                        }
-                 }
-
-        }
     }
-    }
-  }               
+  }
 
   post {
+    success {
+      sh 'curl --user $RMCREDENTIALS -H "Content-Type: application/json" -X POST --data "{\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"}" "$CallBackURL" '
 
-    failure {
-      mail (
-          subject: "${JOB_NAME} ${BUILD_NUMBER} merging branch ${branchName} has failed",
-          body: "Your build ${env.BUILD_NUMBER} has failed.  Find details at ${env.RUN_DISPLAY_URL}", 
-          to: notificationSendToID
-      )
-    }   
+    }
+
   }
 }
-

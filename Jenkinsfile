@@ -15,8 +15,10 @@ pipeline {
     stage('RunMyTest') {
       steps {
         echo 'Execute tests'
-        echo $JOB_NAME
-        echo $CallBackURL
+        echo $param1
+        echo $param2
+        
+        
         withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
           //   sh "./gradlew executePegaUnitTests -PtargetURL=${PEGA_DEV} -PpegaUsername=${IMS_USER} -PpegaPassword=${IMS_PASSWORD} -PtestResultLocation=${WORKSPACE} -PtestResultFile=${TESTRESULTSFILE}"
           // junit "TestResult.xml"

@@ -14,6 +14,8 @@ pipeline {
     stage('RunMyTest') {
       steps {
         echo 'Execute tests'
+        echo $JOB_NAME
+        echo $CallBackURL
         withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
           //   sh "./gradlew executePegaUnitTests -PtargetURL=${PEGA_DEV} -PpegaUsername=${IMS_USER} -PpegaPassword=${IMS_PASSWORD} -PtestResultLocation=${WORKSPACE} -PtestResultFile=${TESTRESULTSFILE}"
           // junit "TestResult.xml"
@@ -29,8 +31,8 @@ pipeline {
 
   post {
     success {
-      sh 'curl --user %RMCREDENTIALS% -H "Content-Type: application/json" -X POST --data "{\"jobName\":\"%JOB_NAME%\",\"buildNumber\":\"%BUILD_NUMBER%\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"%BuildID%\"}" "%CallBackURL%" '
-      
+      sh 'curl --user $RMCREDENTIALS -H "Content-Type: application/json" -X POST --data "{\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"}" "$CallBackURL" '
+
     }
 
   }

@@ -12,13 +12,13 @@ pipeline {
 
 
   stages {
+
     stage('RunMyTest') {
       steps {
         echo 'Doesnt do much'
-
+        sh 'runmytest.sh'
 
       }
-      currentBuild.result = 'FAILURE'
     }
   }
 

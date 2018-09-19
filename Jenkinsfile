@@ -13,7 +13,7 @@ pipeline {
 
   stages {
     stage ('Check4SoapUI') {
-      if not fileexists 'bin/testrunner.sh' {
+      if not (fileexists ('bin/testrunner.sh')) {
         echo 'testrunner is not here'
         echo 'do a checkout of a specific git location to copy the soapui stuff to local server'
         sh 'java --version'

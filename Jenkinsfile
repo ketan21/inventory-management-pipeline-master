@@ -12,43 +12,31 @@ pipeline {
 
 
   stages {
-    stage ('Check4SoapUI') {
-
+    stage ('CheckoutSoapUI') {
       steps{
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
-
-
-
-          sh 'java -version'
-        }
       }
-
-
-
-    stage ('CheckoutTestScript') {
+    }
+    stage ('CheckJavaVersion') {
       steps {
-      echo ' do a checkout of the specified script from git to local'
-      echo ' the scriptfilename should be given as parameter in the pega job'
-      echo 'convention: foldername=scriptname..'
+        sh 'java -version'
+      }
     }
-    }
-
     stage('RunMyTest') {
       steps {
-         echo 'notmuchtodohereyet'
-        //sh 'bin/testrunner.sh -s fjhdkg/$scriptname etc etc'
-
+        sh 'bin/testrunner.sh -s tests/firsttest/firsttest.xml'
       }
     }
   }
 
   post {
     success {
-      sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      echo 'wel goed'
     }
     failure {
-      sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
-
+      //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      echo 'niet goed'
     }
   }
 }

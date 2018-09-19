@@ -13,9 +13,9 @@ pipeline {
 
   stages {
     stage ('Check4SoapUI') {
-def exists = fileExists 'bin/testrunner.sh'
-      steps{
 
+      steps{
+      //  def exists = fileExists 'bin/testrunner.sh'
         if (exists) {
         echo 'okay, file is there'
         } else {

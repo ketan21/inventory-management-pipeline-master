@@ -14,17 +14,9 @@ pipeline {
   stages {
     stage('RunMyTest') {
       steps {
-
+        echo 'Doesnt do much'
         currentBuild.result = 'FAILURE'
-          //       withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
-          //   sh "./gradlew executePegaUnitTests -PtargetURL=${PEGA_DEV} -PpegaUsername=${IMS_USER} -PpegaPassword=${IMS_PASSWORD} -PtestResultLocation=${WORKSPACE} -PtestResultFile=${TESTRESULTSFILE}"
-          // junit "TestResult.xml"
-          //script {
-          //  if (currentBuild.result != null) {
-          //    error("PegaUNIT tests have failed in Dev.")
-          //  }
-          //}
-        //}
+
       }
     }
   }

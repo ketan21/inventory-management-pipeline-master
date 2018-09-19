@@ -15,12 +15,10 @@ pipeline {
     stage ('Check4SoapUI') {
 
       steps{
-      //  def exists = fileExists 'bin/testrunner.sh'
-        if (exists) {
-        echo 'okay, file is there'
-        } else {
-          echo 'testrunner is not here'
-          echo 'do a checkout of a specific git location to copy the soapui stuff to local server'
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
+
+
+        
           sh 'java --version'
         }
       }

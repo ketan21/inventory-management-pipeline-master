@@ -35,7 +35,7 @@ pipeline {
 
   post {
     success {
-      sh 'curl --user $RMCREDENTIALS -H "Content-Type: application/json" -X POST --data "{\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"}" "$CallBackURL" '
+      sh 'curl --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data "{\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"}" "$CallBackURL" '
       sh 'echo $JOB_NAME'
       sh 'echo $BUILD_NUMBER'
     }

@@ -23,8 +23,8 @@ pipeline {
           sh 'java --version'
         }
       }
-      }
     }
+
 
     stage ('CheckoutTestScript') {
       steps {
@@ -33,6 +33,7 @@ pipeline {
       echo 'convention: foldername=scriptname..'
     }
     }
+
     stage('RunMyTest') {
       steps {
          echo 'notmuchtodohereyet'
@@ -40,7 +41,7 @@ pipeline {
 
       }
     }
-  
+
 
   post {
     success {

@@ -14,22 +14,18 @@ pipeline {
   stages {
     stage('RunMyTest') {
       steps {
-        echo 'Execute tests'
-        echo "${params.param1}"
-        echo "${params.CallBackURL}"
-        echo "${params.BuildID}"
-        sh 'echo $BuildID'
-        sh 'echo $JOB_NAME'
+        echo 'These are all the parmeters:'
+         echo sh(returnStdout: true, script: 'env')
 
-        withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
+          //       withEnv(['TESTRESULTSFILE="TestResult.xml"']) {
           //   sh "./gradlew executePegaUnitTests -PtargetURL=${PEGA_DEV} -PpegaUsername=${IMS_USER} -PpegaPassword=${IMS_PASSWORD} -PtestResultLocation=${WORKSPACE} -PtestResultFile=${TESTRESULTSFILE}"
           // junit "TestResult.xml"
-          script {
-            if (currentBuild.result != null) {
-              error("PegaUNIT tests have failed in Dev.")
-            }
-          }
-        }
+          //script {
+          //  if (currentBuild.result != null) {
+          //    error("PegaUNIT tests have failed in Dev.")
+          //  }
+          //}
+        //}
       }
     }
   }

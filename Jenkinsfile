@@ -19,7 +19,7 @@ pipeline {
 
 
 
-          sh 'java --version'
+          sh 'java -version'
         }
       }
 

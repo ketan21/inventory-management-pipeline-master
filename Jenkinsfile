@@ -32,7 +32,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-
+         echo 'notmuchtodohereyet'
         //sh 'bin/testrunner.sh -s fjhdkg/$scriptname etc etc'
 
       }

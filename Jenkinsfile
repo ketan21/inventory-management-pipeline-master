@@ -15,9 +15,10 @@ pipeline {
     stage('RunMyTest') {
       steps {
         echo 'Doesnt do much'
-        currentBuild.result = 'FAILURE'
+
 
       }
+      currentBuild.result = 'FAILURE'
     }
   }
 

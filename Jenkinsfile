@@ -13,6 +13,7 @@ pipeline {
 
   stages {
     stage ('Check4SoapUI') {
+      steps{
       if (fileexists ('bin/testrunner.sh')) {
         echo 'okay, file is there'
       } else {
@@ -21,10 +22,13 @@ pipeline {
         sh 'java --version'
       }
     }
+    }
     stage ('CheckoutTestScript') {
+      steps {
       echo ' do a checkout of the specified script from git to local'
       echo ' the scriptfilename should be given as parameter in the pega job'
       echo 'convention: foldername=scriptname..'
+    }
     }
     stage('RunMyTest') {
       steps {

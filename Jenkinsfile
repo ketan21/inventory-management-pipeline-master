@@ -12,11 +12,22 @@ pipeline {
 
 
   stages {
-
+    stage ('Check4SoapUI') {
+      if not fileexists 'bin/testrunner.sh' {
+        echo 'testrunner is not here'
+        echo 'do a checkout of a specific git location to copy the soapui stuff to local server'
+        sh 'java --version'
+      }
+    }
+    stage ('CheckoutTestScript') {
+      echo ' do a checkout of the specified script from git to local'
+      echo ' the scriptfilename should be given as parameter in the pega job'
+      echo 'convention: foldername=scriptname..'
+    }
     stage('RunMyTest') {
       steps {
-        echo 'Doesnt do much'
-        sh 'runmytest.sh'
+
+        //sh 'bin/testrunner.sh -s fjhdkg/$scriptname etc etc'
 
       }
     }

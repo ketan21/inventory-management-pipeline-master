@@ -24,7 +24,8 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'soapui/bin/testrunner.sh soapui/tests/firsttest/firsttest.xml'
+        sh 'soapui/bin/testrunner.sh -f soapui/tests/firsttest/reports -j soapui/tests/firsttest/firsttest.xml'
+        junit 'soapui/tests/firsttest/reports/*.xml'
       }
     }
   }

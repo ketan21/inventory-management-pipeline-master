@@ -25,7 +25,7 @@ pipeline {
         //nodejs('nodejs') {
           // some block
         //}
-        sh 'newman blaat.collection --exitCode 1'
+        newman blaat.collection --exitCode 1
         echo 'nu nog niets'
       }
     }

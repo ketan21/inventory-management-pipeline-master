@@ -12,13 +12,10 @@ pipeline {
 
 
   stages {
-    stage {'InstallNewMan'} {
-      steps {
-        sh 'npm install -g newman'
-      }
-    }
+  
     stage ('CheckoutPostmanTest') {
       steps{
+        sh 'npm install -g newman'
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
       }
     }

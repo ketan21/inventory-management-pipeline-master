@@ -39,5 +39,8 @@ pipeline {
       //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
       echo 'niet goed'
     }
+    always {
+      cleanWs notFailBuild: true, patterns: [[pattern: '*.xml', type: 'INCLUDE']]
+    }
   }
 }

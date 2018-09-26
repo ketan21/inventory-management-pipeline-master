@@ -20,10 +20,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        //sh 'soapui/bin/testrunner.sh -f soapui/tests/firsttest/reports -j soapui/tests/firsttest/firsttest.xml'
-        //junit 'soapui/tests/firsttest/reports/*.xml'
-        newman run ls.json
-        //echo 'nu nog niets'
+        sh 'newman run ls.json'      
       }
     }
   }

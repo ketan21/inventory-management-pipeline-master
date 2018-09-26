@@ -12,7 +12,10 @@ pipeline {
 
 
   stages {
-    stage ('CheckoutSoapUI') {
+    stage {'Install NewMan'} {
+      sh 'npm install -g newman'
+    }
+    stage ('CheckoutPostmanTest') {
       steps{
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
       }
@@ -24,8 +27,9 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'soapui/bin/testrunner.sh -f soapui/tests/firsttest/reports -j soapui/tests/firsttest/firsttest.xml'
-        junit 'soapui/tests/firsttest/reports/*.xml'
+        //sh 'soapui/bin/testrunner.sh -f soapui/tests/firsttest/reports -j soapui/tests/firsttest/firsttest.xml'
+        //junit 'soapui/tests/firsttest/reports/*.xml'
+        echo 'nu nog niets'
       }
     }
   }
@@ -40,7 +44,8 @@ pipeline {
       echo 'niet goed'
     }
     always {
-      cleanWs notFailBuild: true, patterns: [[pattern: '**/*.xml', type: 'INCLUDE']]
+      //cleanWs notFailBuild: true, patterns: [[pattern: '***.xml', type: 'INCLUDE']]
+      echo 'altijd doen'
     }
   }
 }

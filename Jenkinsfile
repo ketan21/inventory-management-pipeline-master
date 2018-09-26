@@ -13,7 +13,9 @@ pipeline {
 
   stages {
     stage {'Install NewMan'} {
-      sh 'npm install -g newman'
+      steps {
+        sh 'npm install -g newman'
+      }
     }
     stage ('CheckoutPostmanTest') {
       steps{

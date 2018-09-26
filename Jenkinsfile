@@ -1,5 +1,6 @@
 pipeline {
   agent any
+  tool name: 'mynode', type: 'nodejs'
   options {
     timestamps()
     timeout(time: 15, unit: 'MINUTES')
@@ -20,8 +21,9 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        tool name: 'mynode', type: 'nodejs'
+
         sh 'newman run ls.json'
+
       }
     }
   }

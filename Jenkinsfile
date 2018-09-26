@@ -1,6 +1,5 @@
 pipeline {
   agent any
-  tools {nodejs “mynode”}
   options {
     timestamps()
     timeout(time: 15, unit: 'MINUTES')
@@ -20,6 +19,7 @@ pipeline {
       }
     }
     stage('RunMyTest') {
+      tool name: 'mynode', type: 'nodejs'
       steps {
         sh 'node --version'
         sh 'npm --version'

@@ -40,7 +40,7 @@ pipeline {
       echo 'niet goed'
     }
     always {
-      cleanWs notFailBuild: true, patterns: [[pattern: '*.xml', type: 'INCLUDE']]
+      cleanWs notFailBuild: true, patterns: [[pattern: '**/*.xml', type: 'INCLUDE']]
     }
   }
 }

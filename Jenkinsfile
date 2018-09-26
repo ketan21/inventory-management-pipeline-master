@@ -22,11 +22,8 @@ pipeline {
       steps {
         //sh 'soapui/bin/testrunner.sh -f soapui/tests/firsttest/reports -j soapui/tests/firsttest/firsttest.xml'
         //junit 'soapui/tests/firsttest/reports/*.xml'
-        //nodejs('nodejs') {
-          // some block
-        //}
-        newman -c https://www.getpostman.com/collections/457dc4e55a02a5d4c5b1 
-        echo 'nu nog niets'
+        newman run ls.json
+        //echo 'nu nog niets'
       }
     }
   }

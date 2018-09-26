@@ -1,6 +1,6 @@
 pipeline {
   agent any
-    tools {nodejs “nodejs”}
+  tools {nodejs “mynode”}
   options {
     timestamps()
     timeout(time: 15, unit: 'MINUTES')

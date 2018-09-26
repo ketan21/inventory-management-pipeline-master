@@ -22,7 +22,7 @@ pipeline {
     stage('RunMyTest') {
       steps {
         //tool name: 'mynode', type: 'nodejs'
-        sh 'newman run ls.json'
+        sh 'newman run --reporters html ls.json'
         //sh 'npm config ls'
       }
     }

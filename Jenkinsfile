@@ -20,7 +20,10 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'newman run ls.json'      
+        sh 'node --version'
+        sh 'npm --version'
+        sh 'newman --version'
+        //sh 'newman run ls.json'
       }
     }
   }

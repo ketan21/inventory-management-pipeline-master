@@ -21,10 +21,7 @@ pipeline {
     stage('RunMyTest') {
       steps {
         tool name: 'mynode', type: 'nodejs'
-        sh 'node --version'
-        sh 'npm --version'
-        sh 'newman --version'
-        //sh 'newman run ls.json'
+        newman run ls.json
       }
     }
   }

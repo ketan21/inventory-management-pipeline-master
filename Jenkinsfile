@@ -21,7 +21,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        pybot
+        sh 'pybot'
 
 
       }

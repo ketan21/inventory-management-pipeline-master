@@ -21,8 +21,8 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'newman run --reporters junit ls.json'
-        junit 'newman/*.xml'
+        pybot
+
 
       }
     }

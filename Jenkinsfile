@@ -18,7 +18,7 @@ pipeline {
       steps {
         sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
         sh 'python get-pip.py --user'
-        sh '/var/jenkins_home/.local/bin/pip install robot-framework'
+        sh '/var/jenkins_home/.local/bin/pip install robotframework'
         sh 'pybot'
       }
     }

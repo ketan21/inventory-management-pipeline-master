@@ -14,14 +14,11 @@ pipeline {
 
   stages {
 
-    stage ('CheckoutPostmanTest') {
-      steps{
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
-      }
-    }
     stage('RunMyTest') {
       steps {
-        sh 'python -m pip install robot-framework'
+        sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
+        sh 'python get-pip.py'
+        sh 'pip install robot-framework'
         sh 'pybot'
       }
     }

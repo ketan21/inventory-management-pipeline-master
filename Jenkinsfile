@@ -17,7 +17,7 @@ pipeline {
     stage('RunMyTest') {
       steps {
         sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
-        sh 'python get-pip.py'
+        sh 'python get-pip.py --user'
         sh 'pip install robot-framework'
         sh 'pybot'
       }

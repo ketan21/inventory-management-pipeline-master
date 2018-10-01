@@ -21,7 +21,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh '/usr/loca/bin/pip install robot-framework'
+        sh 'python -m pip install robot-framework'
         sh 'pybot'
       }
     }

@@ -21,10 +21,8 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-      sh 'python -version'
-        //sh 'pybot'
-
-
+        sh 'pip install robot-framework'
+        sh 'pybot'
       }
     }
   }

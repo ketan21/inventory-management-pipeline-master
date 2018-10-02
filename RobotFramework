@@ -32,7 +32,7 @@ pipeline {
     }
     stage('PublishHTML') {
       steps {
-        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'RobotFramework', reportFiles: 'log.html,report.html', reportName: 'HTML Report', reportTitles: ''])
+        emailext attachmentsPattern: 'RobotFramework/*.html', body: 'whatever', subject: 'meuk', to: $ReportMail
       }
     }
   }

@@ -32,7 +32,7 @@ pipeline {
     }
     stage('PublishHTML') {
       steps {
-        emailext attachmentsPattern: 'RobotFramework/*.html', body: 'whatever', subject: 'meuk', to: $ReportMail
+        emailext attachmentsPattern: 'RobotFramework/*.html', body: 'whatever', subject: 'meuk', to: 'marco.van.hattem@rabobank.nl'
       }
     }
   }

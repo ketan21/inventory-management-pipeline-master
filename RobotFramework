@@ -20,9 +20,14 @@ pipeline {
       sh '/var/jenkins_home/.local/bin/pip install robotframework --user'
       }
     }
-    stage('RunRobot') {
+    stage ('Download test from GIT') {
       steps {
-        sh '/var/jenkins_home/.local/bin/pybot $TestName'
+        checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'RobotFramework']]]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mvanhNL/testfiles.git']]]
+      }
+    }
+    stage('RunRobotTest') {
+      steps {
+        sh '/var/jenkins_home/.local/bin/pybot RobotFramework/$TestName'
       }
     }
   }

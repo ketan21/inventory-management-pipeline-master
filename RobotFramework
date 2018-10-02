@@ -27,15 +27,15 @@ pipeline {
     }
     stage('RunRobotTest') {
       steps {
-        sh '/var/jenkins_home/.local/bin/pybot --xunit --outputdir RobotFramework RobotFramework/$TestName'
+        sh '/var/jenkins_home/.local/bin/pybot --xunit mybuild.xml --outputdir RobotFramework RobotFramework/$TestName'
       }
     }
     stage('PublishHTML') {
       steps {
         //emailext attachmentsPattern: 'RobotFramework/*.html', body: 'whatever', subject: 'meuk', to: 'marco.van.hattem@rabobank.nl'
         echo 'maildoethetniet'
-        xunit testTimeMargin: '3000', thresholdMode: 1, thresholds: [], tools: [xUnitDotNet(deleteOutputFiles: true, failIfNotNew: true, pattern: 'RobotFramework/*.xml', skipNoTestFiles: true, stopProcessingIfError: true)]
-        
+        xunit testTimeMargin: '3000', thresholdMode: 1, thresholds: [], tools: [xUnitDotNet(deleteOutputFiles: true, failIfNotNew: true, pattern: 'RobotFramework/mybuild.xml', skipNoTestFiles: true, stopProcessingIfError: true)]
+
       }
     }
   }

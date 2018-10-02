@@ -27,7 +27,12 @@ pipeline {
     }
     stage('RunRobotTest') {
       steps {
-        sh '/var/jenkins_home/.local/bin/pybot RobotFramework/$TestName'
+        sh '/var/jenkins_home/.local/bin/pybot --outputdir RobotFramework RobotFramework/$TestName'
+      }
+    }
+    stage('PublishHTML') {
+      steps {
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'RobotFramework', reportFiles: 'log.html,report.html', reportName: 'HTML Report', reportTitles: ''])
       }
     }
   }

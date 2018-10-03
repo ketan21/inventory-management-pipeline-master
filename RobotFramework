@@ -32,7 +32,7 @@ pipeline {
     }
     stage('PublishHTML') {
       steps {
-        sh env
+        sh 'env'
         emailext attachmentsPattern: 'RobotFramework/*.html', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER ', to: $ReportEmail
 
         //xunit testTimeMargin: '3000', thresholdMode: 1, thresholds: [], tools: [xUnitDotNet(deleteOutputFiles: true, failIfNotNew: true, pattern: 'RobotFramework/mybuild.xml', skipNoTestFiles: true, stopProcessingIfError: true)]

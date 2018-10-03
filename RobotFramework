@@ -32,9 +32,9 @@ pipeline {
     }
     stage('PublishHTML') {
       steps {
-        //emailext attachmentsPattern: 'RobotFramework/*.html', body: 'whatever', subject: 'meuk', to: 'marco.van.hattem@rabobank.nl'
-        echo 'maildoethetniet'
-        xunit testTimeMargin: '3000', thresholdMode: 1, thresholds: [], tools: [xUnitDotNet(deleteOutputFiles: true, failIfNotNew: true, pattern: 'RobotFramework/mybuild.xml', skipNoTestFiles: true, stopProcessingIfError: true)]
+        emailext attachmentsPattern: 'RobotFramework/*.html', body: 'whatever', subject: 'meuk', to: 'marco.van.hattem@rabobank.nl'
+
+        //xunit testTimeMargin: '3000', thresholdMode: 1, thresholds: [], tools: [xUnitDotNet(deleteOutputFiles: true, failIfNotNew: true, pattern: 'RobotFramework/mybuild.xml', skipNoTestFiles: true, stopProcessingIfError: true)]
 
       }
     }

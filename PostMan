@@ -5,10 +5,10 @@ pipeline {
     timestamps()
     timeout(time: 15, unit: 'MINUTES')
     withCredentials([
-      usernamePassword(credentialsId: 'RMCREDENTIALS',
-        passwordVariable: 'IMS_PASSWORD',
-        usernameVariable: 'IMS_USER')
-    ])
+      usernamePassword(credentialsId: 'RMCREDENTIALS', passwordVariable: 'IMS_PASSWORD', usernameVariable: 'IMS_USER'),
+      usernamePassword(credentialsId: 'DT1CREDS',passwordVariable: 'DT1_USER1_PASS', usernameVariable: 'DT1_USER1_NAME')
+    ]
+    )
   }
 
 
@@ -21,7 +21,7 @@ pipeline {
     }
     stage('RunPostManTest') {
       steps {
-          sh 'newman run --reporters junit,html "PostMan/$TestName" -e "PostMan/$EnvFile"'
+          sh 'newman run --reporters junit,html "PostMan/$TestName" -e "PostMan/$EnvFile" --global-var username= $DT1_USER1_NAME --global-var password= $DT1_USER1_PASS'
           junit 'newman/*.xml'
           emailext attachmentsPattern: 'newman/*.html', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
       }

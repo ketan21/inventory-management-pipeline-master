@@ -1,6 +1,5 @@
 pipeline {
   agent any
-  tools {nodejs "mynode"}
   options {
     timestamps()
     timeout(time: 15, unit: 'MINUTES')
@@ -13,13 +12,20 @@ pipeline {
 
 
   stages {
-
+    stage ('CheckoutSoapUI') {
+      steps{
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
+      }
+    }
+    stage ('CheckJavaVersion') {
+      steps {
+        sh 'java -version'
+      }
+    }
     stage('RunMyTest') {
       steps {
-        sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
-        sh 'python get-pip.py --user'
-        sh '/var/jenkins_home/.local/bin/pip install robotframework --user'
-        sh '/var/jenkins_home/.local/bin/pybot'
+        sh 'soapui/bin/testrunner.sh -f soapui/tests/firsttest/reports -j soapui/tests/firsttest/firsttest.xml'
+        junit 'soapui/tests/firsttest/reports/*.xml'
       }
     }
   }
@@ -32,10 +38,6 @@ pipeline {
     failure {
       //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
       echo 'niet goed'
-    }
-    always {
-      //cleanWs notFailBuild: true, patterns: [[pattern: '***.xml', type: 'INCLUDE']]
-      echo 'altijd doen'
     }
   }
 }

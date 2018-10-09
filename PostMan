@@ -19,7 +19,9 @@ pipeline {
       }
     }
     stage('RunPostManTest') {
-      newman run $(env.TestName)
+      steps {
+          newman run $(env.TestName)
+      }
     }
   }
 

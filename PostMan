@@ -38,7 +38,7 @@ pipeline {
       echo 'niet goed'
     }
     always {
-      cleanWs notFailBuild: true
+      //cleanWs notFailBuild: true
       echo 'altijd doen'
     }
   }

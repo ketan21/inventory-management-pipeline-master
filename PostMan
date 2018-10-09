@@ -1,6 +1,5 @@
 pipeline {
   agent any
-  tools {nodejs "mynode"}
   options {
     timestamps()
     timeout(time: 15, unit: 'MINUTES')
@@ -14,13 +13,13 @@ pipeline {
 
   stages {
 
-    stage('RunMyTest') {
+    stage('CheckoutPostmanTest') {
       steps {
-        sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
-        sh 'python get-pip.py --user'
-        sh '/var/jenkins_home/.local/bin/pip install robotframework --user'
-        sh '/var/jenkins_home/.local/bin/pybot'
+        checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'PostMan']]]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mvanhNL/testfiles.git']]]
       }
+    }
+    stage('RunPostManTest') {
+      newman run $(env.TestName)
     }
   }
 

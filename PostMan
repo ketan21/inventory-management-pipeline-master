@@ -21,7 +21,7 @@ pipeline {
     }
     stage('RunPostManTest') {
       steps {
-          sh 'newman run --reporters junit "PostMan/$TestName" -e PostMan/$EnvFile'
+          sh 'newman run --reporters junit "PostMan/$TestName" -e "PostMan/$EnvFile"'
           junit 'newman/*.xml'
       }
     }

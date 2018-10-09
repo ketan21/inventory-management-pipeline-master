@@ -21,7 +21,7 @@ pipeline {
     }
     stage('RunPostManTest') {
       steps {
-          sh 'newman run --reporters junit,html "PostMan/$TestName" -e "PostMan/$EnvFile" --global-var user="$DT1_USER1_NAME" --global-var pwd="$DT1_USER1_PASS"'
+          sh 'newman run --reporters junit,html "PostMan/$TestName" -e "PostMan/$EnvFile" --global-var User="$DT1_USER1_NAME" --global-var pwd="$DT1_USER1_PASS"'
           junit 'newman/*.xml'
           emailext attachmentsPattern: 'newman/*.html', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
       }

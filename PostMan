@@ -23,6 +23,7 @@ pipeline {
       steps {
           sh 'newman run --reporters junit,html "PostMan/$TestName" -e "PostMan/$EnvFile"'
           junit 'newman/*.xml'
+          emailext attachmentsPattern: 'newman/*.html', body: 'whatever', subject: 'Results for $(env.JOB_NAME) Build: $(env.BUILD_NUMBER) ', to: env.ReportEmail
       }
     }
   }
@@ -37,7 +38,8 @@ pipeline {
       echo 'niet goed'
     }
     always {
-      //cleanWs notFailBuild: true, patterns: [[pattern: '***.xml', type: 'INCLUDE']]
+      cleanWs notFailBuild: true, patterns: [[pattern: '***.xml', type: 'INCLUDE']]
+      cleanWs notFailBuild: true, patterns: [[pattern: '***.html', type: 'INCLUDE']]
       echo 'altijd doen'
     }
   }

@@ -23,7 +23,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'soapui/bin/testrunner.sh -f SoapUI/reports -j SoapUI/$TestName  -u "PTRainbowIntTest" -p "RB@Rabo123!"'
+        sh 'soapui/bin/testrunner.sh -f SoapUI/reports -j SoapUI/$TestName  -u "$SOAP_USER" -p "RB@Rabo123!"'
 
       }
     }

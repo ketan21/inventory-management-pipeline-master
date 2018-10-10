@@ -25,7 +25,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'soapui/bin/testrunner.sh -p$SOAP_PASS -u$SOAP_USER -f SoapUI/reports -j SoapUI/$TestName'
+        sh 'soapui/bin/testrunner.sh -p"$SOAP_PASS" -u"$SOAP_USER" -f SoapUI/reports -j SoapUI/$TestName'
 
       }
     }

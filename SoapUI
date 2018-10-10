@@ -25,7 +25,7 @@ pipeline {
     stage('RunMyTest') {
       steps {
         sh 'soapui/bin/testrunner.sh -f SoapUI/reports -j SoapUI/$TestName'
-        //junit 'SoapUI/reports/*.xml'
+
       }
     }
   }
@@ -38,6 +38,12 @@ pipeline {
     failure {
       //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
       echo 'niet goed'
+    }
+    always {
+      junit 'SoapUI/reports/*.xml'
+      //emailext attachmentsPattern: 'newman/*.html', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
+      //cleanWs ()
+      echo 'altijd doen'
     }
   }
 }

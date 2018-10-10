@@ -24,7 +24,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'soapui/bin/testrunner.sh -f SoapUI/SoapUI/$TestName/reports -j SoapUI/SoapUI/$TestName'
+        sh 'soapui/bin/testrunner.sh -f SoapUI/$TestName/reports -j SoapUI/$TestName'
         //junit 'soapui/$TestName/reports/*.xml'
       }
     }

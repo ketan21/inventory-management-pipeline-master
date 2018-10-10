@@ -6,7 +6,8 @@ pipeline {
     withCredentials([
       usernamePassword(credentialsId: 'RMCREDENTIALS',
         passwordVariable: 'IMS_PASSWORD',
-        usernameVariable: 'IMS_USER')
+        usernameVariable: 'IMS_USER'),
+        usernamePassword(credentialsId: 'soapui01',passwordVariable: 'SOAP_USER', usernameVariable: 'SOAP_PASS')
     ])
   }
 
@@ -24,7 +25,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'soapui/bin/testrunner.sh -g -f SoapUI/reports -j SoapUI/$TestName'
+        sh 'soapui/bin/testrunner.sh -p$SOAP_PASS -u$SOAP_USER -f SoapUI/reports -j SoapUI/$TestName'
 
       }
     }

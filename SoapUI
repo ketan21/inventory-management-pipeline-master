@@ -24,7 +24,7 @@ pipeline {
     }
     stage('RunMyTest') {
       steps {
-        sh 'soapui/bin/testrunner.sh -FXML,HTML,PDF -f SoapUI/reports -j SoapUI/$TestName'
+        sh 'soapui/bin/testrunner.sh -G -f SoapUI/reports -j SoapUI/$TestName'
 
       }
     }

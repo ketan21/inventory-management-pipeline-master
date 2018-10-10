@@ -14,12 +14,17 @@ pipeline {
   stages {
     stage ('CheckoutSoapUI') {
       steps{
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
+      }
+    }
+    stage ('CheckoutSoapUItest') {
+      steps{
         checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'SoapUI']]]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mvanhNL/testfiles.git']]]
       }
     }
     stage('RunMyTest') {
       steps {
-        sh 'soapui/bin/testrunner.sh -f soapui/$TestName/reports -j soapui/tests/$TestName'
+        sh 'soapui/bin/testrunner.sh -f SoapUI/SoapUI/$TestName/reports -j SoapUI/SoapUI/$TestName'
         //junit 'soapui/$TestName/reports/*.xml'
       }
     }

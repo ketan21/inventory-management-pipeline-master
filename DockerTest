@@ -1,0 +1,50 @@
+pipeline {
+  agent {
+    docker { image 'node:7-alpine'}
+  }
+  options {
+    timestamps()
+    timeout(time: 15, unit: 'MINUTES')
+    withCredentials([
+      usernamePassword(credentialsId: 'RMCREDENTIALS', passwordVariable: 'IMS_PASSWORD', usernameVariable: 'IMS_USER'),
+      usernamePassword(credentialsId: 'soapui01', passwordVariable: 'SOAP_PASS', usernameVariable: 'SOAP_USER')
+    ])
+  }
+
+
+  stages {
+    stage ('CheckoutSoapUI') {
+      steps{
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
+      }
+    }
+    stage ('CheckoutSoapUItest') {
+      steps{
+        checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'SoapUI']]]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mvanhNL/testfiles.git']]]
+      }
+    }
+    stage('RunMyTest') {
+      steps {
+        sh 'soapui/bin/testrunner.sh -f SoapUI/reports -j SoapUI/$TestName  -u "$SOAP_USER" -p "$SOAP_PASS"'
+
+      }
+    }
+  }
+
+  post {
+    success {
+      sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      echo 'wel goed'
+    }
+    failure {
+      sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      echo 'niet goed'
+    }
+    always {
+      junit 'SoapUI/reports/*.xml'
+      //emailext attachmentsPattern: 'newman/*.html', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
+      cleanWs ()
+      echo 'altijd doen'
+    }
+  }
+}

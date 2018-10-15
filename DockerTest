@@ -2,6 +2,8 @@ pipeline {
   agent {
     dockerfile {
       filename 'Dockerfile-slave'
+      reuseNode true
+      args "-v /tmp:/tmp -p 8000:8000"
     }
   }
   options {

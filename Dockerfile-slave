@@ -1,0 +1,6 @@
+
+FROM centos
+
+USER root
+
+RUN ln -sf  /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime

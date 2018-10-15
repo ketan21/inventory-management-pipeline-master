@@ -1,6 +1,9 @@
 pipeline {
   agent {
-    docker { image 'node:7-alpine'}
+    dockerfile {
+      filename 'Dockerfile-slave'
+      label 'slave-jenkins'
+    }
   }
   options {
     timestamps()

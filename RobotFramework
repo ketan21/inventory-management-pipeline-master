@@ -19,7 +19,8 @@ pipeline {
       sh 'python get-pip.py --user'
       sh '/var/jenkins_home/.local/bin/pip install robotframework --user'
       sh '/var/jenkins_home/.local/bin/pip install robotframework-requests --user'
-      sh '/var/jenkins_home/.local/bin/pip install robotframework-extendedrequestlibrary --user'
+      sh '/var/jenkins_home/.local/bin/pip install robotframework-extendedrequestslibrary --user'
+    
       sh '/var/jenkins_home/.local/bin/pip install robotframework-seleniumlibrary --user'
       sh '/var/jenkins_home/.local/bin/pip install robotframework-selenium2library --user'
       }

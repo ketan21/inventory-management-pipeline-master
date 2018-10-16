@@ -1,9 +1,7 @@
 pipeline {
   agent {
-    dockerfile {
-      filename 'Dockerfile-slave'
-      reuseNode true
-      args "-v jenkins_home:$JENKINS_HOME -v /tmp:/tmp -p 8000:8000"
+    docker {
+      image 'agent'
     }
   }
   options {

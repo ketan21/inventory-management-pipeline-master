@@ -39,8 +39,8 @@ pipeline {
       echo 'niet goed'
     }
     always {
-      emailext attachmentsPattern: 'SoapUI/reports/*.txt', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
-      junit 'SoapUI/reports/*.xml'
+      emailext attachmentsPattern: 'SoapUI/SoapUI/reports/*.txt', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
+      junit 'SoapUI/SoapUI/reports/*.xml'
       //cleanWs ()
       echo 'altijd doen'
     }

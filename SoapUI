@@ -22,6 +22,9 @@ pipeline {
       }
     }
     stage('RunMyTest') {
+      withCredentials([
+        usernamePassword(credentialsId: $CREDENTIALID, passwordVariable: 'SOAP_PASS', usernameVariable: 'SOAP_USER')
+        ])
       steps {
         sh 'soapui/bin/testrunner.sh -a -j -f SoapUI/reports -j "SoapUI/$TestName"  -u "$SOAP_USER" -p "$SOAP_PASS"'
 

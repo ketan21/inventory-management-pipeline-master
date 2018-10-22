@@ -4,9 +4,8 @@ pipeline {
     timestamps()
     timeout(time: 30, unit: 'MINUTES')
     withCredentials([
-      usernamePassword(credentialsId: 'RMCREDENTIALS',
-        passwordVariable: 'IMS_PASSWORD',
-        usernameVariable: 'IMS_USER')
+      usernamePassword(credentialsId: 'RMCREDENTIALS', passwordVariable: 'IMS_PASSWORD', usernameVariable: 'IMS_USER'),
+      usernamePassword(credentialsId: 'DT1CREDS',passwordVariable: 'DT1_USER1_PASS', usernameVariable: 'DT1_USER1_NAME')
     ])
   }
 
@@ -20,7 +19,7 @@ pipeline {
       sh '/var/jenkins_home/.local/bin/pip install robotframework --user'
       sh '/var/jenkins_home/.local/bin/pip install robotframework-requests --user'
       sh '/var/jenkins_home/.local/bin/pip install robotframework-extendedrequestslibrary --user'
-    
+
       sh '/var/jenkins_home/.local/bin/pip install robotframework-seleniumlibrary --user'
       sh '/var/jenkins_home/.local/bin/pip install robotframework-selenium2library --user'
       }

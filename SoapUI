@@ -10,13 +10,12 @@ pipeline {
   }
 
 
+  stages {
+  withCredentials([
+    usernamePassword(credentialsId: $CREDENTIALID, passwordVariable: 'SOAP_PASS', usernameVariable: 'SOAP_USER')
+    ])
     stage ('CheckoutSoapUI') {
-    withCredentials([
-      usernamePassword(credentialsId: $CREDENTIALID, passwordVariable: 'SOAP_PASS', usernameVariable: 'SOAP_USER')
-      ])
       steps{
-      stages {
-
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
       }
     }
@@ -28,7 +27,6 @@ pipeline {
     stage('RunMyTest') {
 
       steps {
-
         sh 'soapui/bin/testrunner.sh -a -j -f SoapUI/reports -j "SoapUI/$TestName"  -u "$SOAP_USER" -p "$SOAP_PASS"'
 
       }

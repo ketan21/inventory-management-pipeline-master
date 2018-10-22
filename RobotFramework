@@ -31,8 +31,7 @@ pipeline {
     }
     stage('RunRobotTest') {
       steps {
-        sh '/var/jenkins_home/.local/bin/pybot --xunit mybuild.xml --outputdir RobotFramework RobotFramework/"$TestName"'
-        // --variable username:"$DT1_USER1_NAME" --variable password:"$DT1_USER1_PASS" '
+        sh '/var/jenkins_home/.local/bin/pybot --xunit mybuild.xml --outputdir RobotFramework --variable username:"$DT1_USER1_NAME" --variable password:"$DT1_USER1_PASS" RobotFramework/"$TestName"'
       }
     }
     stage('PublishHTML') {

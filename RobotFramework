@@ -16,12 +16,12 @@ pipeline {
       steps {
       sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
       sh 'python get-pip.py --user'
-      sh '/var/jenkins_home/.local/bin/pip install robotframework --user'
-      sh '/var/jenkins_home/.local/bin/pip install robotframework-requests --user'
-      sh '/var/jenkins_home/.local/bin/pip install robotframework-extendedrequestslibrary --user'
+      sh '/root/.local/bin/pip install robotframework --user'
+      sh '/root/.local/bin/pip install robotframework-requests --user'
+      sh '/root/.local/bin/pip install robotframework-extendedrequestslibrary --user'
 
-      sh '/var/jenkins_home/.local/bin/pip install robotframework-seleniumlibrary --user'
-      sh '/var/jenkins_home/.local/bin/pip install robotframework-selenium2library --user'
+      sh '/root/.local/bin/pip install robotframework-seleniumlibrary --user'
+      sh '/root/.local/bin/pip install robotframework-selenium2library --user'
       }
     }
     stage ('Download test from GIT') {

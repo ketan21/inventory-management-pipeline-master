@@ -44,7 +44,7 @@ pipeline {
     always {
       emailext attachmentsPattern: 'SoapUI/SoapUI/reports/*.txt', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
       junit 'SoapUI/SoapUI/reports/*.xml'
-      cleanWs ()
+      // cleanWs ()
       echo 'altijd doen'
     }
   }

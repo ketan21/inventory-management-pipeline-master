@@ -42,6 +42,8 @@ pipeline {
       echo 'niet goed'
     }
     always {
+      sh 'sed -i '/^Username:/d' SoaupUI/SoapUI/reports/*.txt
+      sh 'sed -i '/^Password:/d' SoaupUI/SoapUI/reports/*.txt
       emailext attachmentsPattern: 'SoapUI/SoapUI/reports/*.txt', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
       junit 'SoapUI/SoapUI/reports/*.xml'
       // cleanWs ()

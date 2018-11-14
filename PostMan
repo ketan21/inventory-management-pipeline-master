@@ -21,7 +21,7 @@ pipeline {
     }
     stage('RunPostManTest') {
       steps {
-        sh 'newman run --reporters junit,html "PostMan/$TestName" -e "PostMan/$EnvFile" --global-var User="oscar.ruiz" --global-var pwd="rules1234!"'
+        sh 'newman run --reporters junit,html "PostMan/$TestName" -e "PostMan/$EnvFile" --global-var User="$DT1_USER1_NAME" --global-var pwd="$DT1_USER1_PASS"'
       }
     }
   }

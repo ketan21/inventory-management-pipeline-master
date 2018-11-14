@@ -1,0 +1,45 @@
+pipeline {
+  agent any
+  tools {nodejs "mynode"}
+  options {
+    timestamps()
+    timeout(time: 15, unit: 'MINUTES')
+    withCredentials([
+      usernamePassword(credentialsId: 'RMCREDENTIALS', passwordVariable: 'IMS_PASSWORD', usernameVariable: 'IMS_USER'),
+      usernamePassword(credentialsId: 'DT1CREDS',passwordVariable: 'DT1_USER1_PASS', usernameVariable: 'DT1_USER1_NAME')
+    ]
+    )
+  }
+
+
+  stages {
+
+    stage('CheckoutPostmanTest') {
+      steps {
+        checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'PostMan']]]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mvanhNL/testfiles.git']]]
+      }
+    }
+    stage('RunPostManTest') {
+      steps {
+        sh 'newman run --reporters junit,html "PostMan/$TestName" -e "PostMan/$EnvFile" --global-var User="oscar.ruiz" --global-var pwd="rules1234!"'
+      }
+    }
+  }
+
+  post {
+    success {
+      //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+       echo 'wel goed'
+    }
+    failure {
+      //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+       echo 'niet goed'
+    }
+    always {
+      junit 'newman/*.xml'
+      emailext attachmentsPattern: 'newman/*.html', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
+      cleanWs ()
+      // echo 'altijd doen'
+    }
+  }
+}

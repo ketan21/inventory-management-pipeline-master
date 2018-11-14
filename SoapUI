@@ -34,20 +34,20 @@ pipeline {
 
   post {
     success {
-      //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
-      echo 'wel goed'
+      sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      // echo 'wel goed'
     }
     failure {
-      //sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
-      echo 'niet goed'
+      sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      // echo 'niet goed'
     }
     always {
       sh 'sed -i "/^Username:/d" SoapUI/SoapUI/reports/*.txt'
       sh 'sed -i "/^Password:/d" SoapUI/SoapUI/reports/*.txt'
       emailext attachmentsPattern: 'SoapUI/SoapUI/reports/*.txt', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
       junit 'SoapUI/SoapUI/reports/*.xml'
-      // cleanWs ()
-      echo 'altijd doen'
+      cleanWs ()
+      // echo 'altijd doen'
     }
   }
 }

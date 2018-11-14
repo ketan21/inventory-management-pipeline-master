@@ -1,0 +1,61 @@
+pipeline {
+  agent any
+    options {
+    timestamps()
+    timeout(time: 30, unit: 'MINUTES')
+    withCredentials([
+      usernamePassword(credentialsId: 'RMCREDENTIALS', passwordVariable: 'IMS_PASSWORD', usernameVariable: 'IMS_USER'),
+      usernamePassword(credentialsId: 'soapui01',passwordVariable: 'DT1_USER1_PASS', usernameVariable: 'DT1_USER1_NAME')
+    ])
+  }
+
+
+  stages {
+
+    stage ('InstallTools') {
+      steps {
+      sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
+      sh 'python get-pip.py --user'
+      sh '/root/.local/bin/pip install robotframework --user'
+      sh '/root/.local/bin/pip install robotframework-requests --user'
+      sh '/root/.local/bin/pip install robotframework-extendedrequestslibrary --user'
+
+      sh '/root/.local/bin/pip install robotframework-seleniumlibrary --user'
+      sh '/root/.local/bin/pip install robotframework-selenium2library --user'
+      }
+    }
+    stage ('Download test from GIT') {
+      steps {
+        checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'RobotFramework']]]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mvanhNL/testfiles.git']]]
+      }
+    }
+    stage('RunRobotTest') {
+      steps {
+        sh '/root/.local/bin/pybot --xunit mybuild.xml --outputdir RobotFramework --variable username:"$DT1_USER1_NAME" --variable password:"$DT1_USER1_PASS" RobotFramework/"$TestName"'
+      }
+    }
+    stage('PublishHTML') {
+      steps {
+        emailext attachmentsPattern: 'RobotFramework/*.html', body: 'whatever', subject: 'Results for $(env.JOB_NAME) Build: $(env.BUILD_NUMBER) ', to: env.ReportEmail
+
+        //xunit testTimeMargin: '3000', thresholdMode: 1, thresholds: [], tools: [xUnitDotNet(deleteOutputFiles: true, failIfNotNew: true, pattern: 'RobotFramework/mybuild.xml', skipNoTestFiles: true, stopProcessingIfError: true)]
+
+      }
+    }
+  }
+
+  post {
+    success {
+      // sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"SUCCESS\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      echo 'Alles okay'
+    }
+    failure {
+      // sh 'curl -v --user $IMS_USER:$IMS_PASSWORD -H "Content-Type: application/json" -X POST --data {\"jobName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"pyStatusValue\":\"FAIL\",\"pyID\":\"$BuildID\"} "$CallBackURL" '
+      echo 'Er is iets niet goed gegaan'
+    }
+    always {
+      cleanWs notFailBuild: true, patterns: [[pattern: '***.xml', type: 'INCLUDE']]
+      // echo 'altijd doen'
+    }
+  }
+}

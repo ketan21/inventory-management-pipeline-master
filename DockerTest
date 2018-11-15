@@ -6,7 +6,7 @@ pipeline {
   }
   options {
     timestamps()
-    timeout(time: 15, unit: 'MINUTES')
+    timeout(time: 60, unit: 'MINUTES')
     withCredentials([
       usernamePassword(credentialsId: 'RMCREDENTIALS', passwordVariable: 'IMS_PASSWORD', usernameVariable: 'IMS_USER'),
       usernamePassword(credentialsId: 'soapui01', passwordVariable: 'SOAP_PASS', usernameVariable: 'SOAP_USER')
@@ -18,16 +18,19 @@ pipeline {
     stage ('CheckoutSoapUI') {
       steps{
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
+        sleep 300
       }
     }
     stage ('CheckoutSoapUItest') {
       steps{
         checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'SoapUI']]]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mvanhNL/testfiles.git']]]
+        sleep 300
       }
     }
     stage('RunMyTest') {
       steps {
         sh 'soapui/bin/testrunner.sh -a -j -f SoapUI/reports -j "SoapUI/$TestName"  -u "$SOAP_USER" -p "$SOAP_PASS"'
+        sleep 300
       }
     }
   }

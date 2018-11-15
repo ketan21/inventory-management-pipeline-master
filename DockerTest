@@ -18,19 +18,20 @@ pipeline {
     stage ('CheckoutSoapUI') {
       steps{
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'soapui']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'mhgit', url: 'https://github.com/mvanhNL/soapui.git']]])
-        sleep 300
+        sleep 30
       }
     }
     stage ('CheckoutSoapUItest') {
       steps{
         checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'SoapUI']]]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mvanhNL/testfiles.git']]]
-        sleep 300
+        sleep 30
       }
     }
     stage('RunMyTest') {
       steps {
         sh 'soapui/bin/testrunner.sh -a -j -f SoapUI/reports -j "SoapUI/$TestName"  -u "$SOAP_USER" -p "$SOAP_PASS"'
-        sleep 300
+        junit 'SoapUI/reports/*.xml'
+        sleep 30
       }
     }
   }
@@ -45,7 +46,7 @@ pipeline {
       echo 'niet goed'
     }
     always {
-      junit 'SoapUI/reports/*.xml'
+      
       //emailext attachmentsPattern: 'newman/*.html', body: 'whatever', subject: 'Results for $JOB_NAME Build: $BUILD_NUMBER Status: $BUILD_STATUS', to: env.ReportEmail
       //cleanWs ()
       echo 'altijd doen'

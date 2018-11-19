@@ -3,10 +3,10 @@ pipeline {
   tools {nodejs "mynode"}
   options {
     timestamps()
-    timeout(time: 15, unit: 'MINUTES')
+    timeout(time: 30, unit: 'MINUTES')
     withCredentials([
       usernamePassword(credentialsId: 'RMCREDENTIALS', passwordVariable: 'IMS_PASSWORD', usernameVariable: 'IMS_USER'),
-      usernamePassword(credentialsId: 'salesTST',passwordVariable: 'MY_PASSWORD', usernameVariable: 'MY_USERNAME')
+      usernamePassword(credentialsId: 'customersTST',passwordVariable: 'MY_PASSWORD', usernameVariable: 'MY_USERNAME')
     ]
     )
   }

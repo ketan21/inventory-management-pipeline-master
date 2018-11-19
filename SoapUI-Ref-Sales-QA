@@ -5,7 +5,7 @@ pipeline {
     timeout(time: 30, unit: 'MINUTES')
     withCredentials([
       usernamePassword(credentialsId: 'RMCREDENTIALS', passwordVariable: 'IMS_PASSWORD', usernameVariable: 'IMS_USER'),
-      usernamePassword(credentialsId: 'salesTST', passwordVariable: 'MY_PASSWORD', usernameVariable: 'MY_USERNAME')
+      usernamePassword(credentialsId: 'salesQA', passwordVariable: 'MY_PASSWORD', usernameVariable: 'MY_USERNAME')
     ])
   }
 

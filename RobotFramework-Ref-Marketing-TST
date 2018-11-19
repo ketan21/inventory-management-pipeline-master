@@ -54,7 +54,7 @@ pipeline {
       // echo 'niet goed'
     }
     always {
-      cleanWs ())
+      cleanWs ()
       // echo 'altijd doen'
     }
   }

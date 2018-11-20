@@ -14,14 +14,11 @@ pipeline {
 
     stage ('InstallTools') {
       steps {
-      // sh 'curl https://bootstrap.pypa.io/get-pip.py -o /opt/jenkins/tools/get-pip.py'
-      // sh 'python get-pip.py --user'
-      sh 'python -m pip install robotframework --user'
-      sh 'python -m pip install robotframework-requests --user'
-      sh 'python -m pip install robotframework-extendedrequestslibrary --user'
-
-      sh 'python -m pip install robotframework-seleniumlibrary --user'
-      sh 'python -m pip install robotframework-selenium2library --user'
+        sh 'python -m pip install robotframework --user'
+        sh 'python -m pip install robotframework-requests --user'
+        sh 'python -m pip install robotframework-extendedrequestslibrary --user'
+        sh 'python -m pip install robotframework-seleniumlibrary --user'
+        sh 'python -m pip install robotframework-selenium2library --user'
       }
     }
     stage ('Download test from GIT') {
@@ -38,6 +35,7 @@ pipeline {
       steps {
         emailext attachmentsPattern: 'RobotFramework/*.html', body: 'Attached are the results of your testrun', subject: 'Results for $(env.JOB_NAME) Build: $(env.BUILD_NUMBER) ', to: env.ReportEmail
 
+        step([$class: 'RobotPublisher', disableArchiveOutput: false, logFileName: 'log.html', otherFiles: '', outputFileName: 'output.xml', outputPath: 'RobotFramework/', passThreshold: 100, reportFileName: 'report.html', unstableThreshold: 0]);
         //xunit testTimeMargin: '3000', thresholdMode: 1, thresholds: [], tools: [xUnitDotNet(deleteOutputFiles: true, failIfNotNew: true, pattern: 'RobotFramework/mybuild.xml', skipNoTestFiles: true, stopProcessingIfError: true)]
 
       }

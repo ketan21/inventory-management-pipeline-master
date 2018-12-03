@@ -27,7 +27,7 @@ pipeline {
     }
     stage('RunRobotTest') {
       steps {
-        sh '/root/.local/bin/pybot --xunit mybuild.xml --outputdir RobotFramework --variable username:"$MY_USERNAME" --variable password:"$MY_PASSWORD" RobotFramework/"$TestName"'
+        sh '/root/.local/bin/pybot --nostatusrc --xunit mybuild.xml --outputdir RobotFramework --variable username:"$MY_USERNAME" --variable password:"$MY_PASSWORD" RobotFramework/"$TestName"'
       }
     }
     stage('PublishHTML') {
